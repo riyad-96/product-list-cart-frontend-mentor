@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+
+    <link rel="stylesheet" href="./src/style.css" />
+    <script src="./src/app.js" defer></script>
+  </head>
+  <body class="bg-(--rose-100) font-['Red_Hat_Text']">
+    <main class="my-18 box-content gap-8 px-6 md:mx-auto md:flex md:max-w-[1220px] md:items-start">
+      <div class="flex-1">
+        <h1 class="mb-8 text-[2.525rem] font-bold text-(--rose-900)">Desserts</h1>
+        <!-- Product lists -->
+        <div id="product-list-container" class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-6"></div>
+      </div>
+
+      <div id="cart" class="rounded-xl bg-white py-5 px-6 md:w-[285px] lg:w-[385px]">
+        <h2 class="text-[1.5rem] font-bold text-(--red)">Your Cart (<span id="product-count">0</span>)</h2>
+        <div id="cart-info">
+          <img class="mx-auto mt-8" src="./src/images/illustration-empty-cart.svg" alt="Image of a cake" />
+
+          <span class="block pt-4 pb-6 text-center text-sm font-semibold text-(--rose-500)">Your added items will appear here</span>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
