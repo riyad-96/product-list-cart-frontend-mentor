@@ -111,46 +111,142 @@ const dessertMenu = [
 
 const svg = {
   cart: `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" fill="none" viewBox="0 0 21 20"><g fill="#C73B0F" clip-path="url(#a)"><path d="M6.583 18.75a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5ZM15.334 18.75a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5ZM3.446 1.752a.625.625 0 0 0-.613-.502h-2.5V2.5h1.988l2.4 11.998a.625.625 0 0 0 .612.502h11.25v-1.25H5.847l-.5-2.5h11.238a.625.625 0 0 0 .61-.49l1.417-6.385h-1.28L16.083 10H5.096l-1.65-8.248Z"/><path d="M11.584 3.75v-2.5h-1.25v2.5h-2.5V5h2.5v2.5h1.25V5h2.5V3.75h-2.5Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M.333 0h20v20h-20z"/></clipPath></defs></svg>`,
+  carbonNeutral: `<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" fill="none" viewBox="0 0 21 20"><path fill="#1EA575" d="M8 18.75H6.125V17.5H8V9.729L5.803 8.41l.644-1.072 2.196 1.318a1.256 1.256 0 0 1 .607 1.072V17.5A1.25 1.25 0 0 1 8 18.75Z"/><path fill="#1EA575" d="M14.25 18.75h-1.875a1.25 1.25 0 0 1-1.25-1.25v-6.875h3.75a2.498 2.498 0 0 0 2.488-2.747 2.594 2.594 0 0 0-2.622-2.253h-.99l-.11-.487C13.283 3.56 11.769 2.5 9.875 2.5a3.762 3.762 0 0 0-3.4 2.179l-.194.417-.54-.072A1.876 1.876 0 0 0 5.5 5a2.5 2.5 0 1 0 0 5v1.25a3.75 3.75 0 0 1 0-7.5h.05a5.019 5.019 0 0 1 4.325-2.5c2.3 0 4.182 1.236 4.845 3.125h.02a3.852 3.852 0 0 1 3.868 3.384 3.75 3.75 0 0 1-3.733 4.116h-2.5V17.5h1.875v1.25Z"/></svg>`,
+  decrement: `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="2" fill="none" viewBox="0 0 10 2"><path fill="currentColor" d="M0 .375h10v1.25H0V.375Z"/></svg>`,
+  increment: `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path fill="CurrentColor" d="M10 4.375H5.625V0h-1.25v4.375H0v1.25h4.375V10h1.25V5.625H10v-1.25Z"/></svg>`,
+  removeItem: `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path fill="currentColor" d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z"/></svg>`,
 };
+
+function emptyMenuListPlaceholder() {
+  return `<img class="mx-auto mt-8" src="./src/images/illustration-empty-cart.svg" alt="Image of a cake" />
+          <span class="block pt-4 pb-6 text-center text-sm font-semibold text-(--rose-500)">Your added items will appear here</span>`;
+}
 
 const productListContainer = document.getElementById('product-list-container');
-const cartInfo = document.getElementById('cart-info');
 const productCount = document.getElementById('product-count');
+const cartInfo = document.getElementById('cart-info');
 
-const tailwind = {
-  eachMenu: 'eachMenu',
-  eachMenuImgContainer: 'aspect-1/1 bg-cover bg-center bg-no-repeat border-blue-700 rounded-lg relative',
-  cartBtnContainer: 'cartBtnContainer border border-(--rose-500) hover:border-(--red) absolute top-full left-[50%] translate-[-50%] w-[160px] h-[45px] rounded-full',
-  addToCartBtn: 'addToCartBtn group w-full h-full bg-white rounded-full flex items-center justify-center gap-2 cursor-pointer',
-};
-
-document.addEventListener('DOMContentLoaded', () => {
+//! Load all dessert menu
+(() => {
   dessertMenu.forEach((menu) => {
     const div = document.createElement('div');
-    div.className = tailwind.eachMenu;
+    div.className = 'eachMenu pb-2';
     div.innerHTML = `
-      <div class="${tailwind.eachMenuImgContainer}" style="background-image: url(${menu.image.desktop});">
-        <div class="${tailwind.cartBtnContainer}">
-          <button data-menu-id="${menu.id}" class="${tailwind.addToCartBtn}">
+      <div class="aspect-1/1 bg-cover bg-center bg-no-repeat border-blue-700 rounded-lg relative" style="background-image: url(${menu.image.desktop});">
+        <div class="cartBtnContainer border border-(--rose-500) hover:border-(--red) absolute top-full left-[50%] translate-[-50%] w-[160px] h-[45px] rounded-full overflow-hidden">
+          <button data-menu-id="${menu.id}" class="addToCartBtn group w-full h-full bg-white flex items-center justify-center gap-2 sm:cursor-pointer">
             ${svg.cart}
             <span class="font-semibold text-sm text-(--rose-900) group-hover:text-(--red)">Add to Cart</span>
           </button>
+          <div class="bg-(--red) h-full flex items-center justify-between px-4">
+            <button class="decrementBtn grid place-items-center group p-1 rounded-full sm:cursor-pointer">
+              <span class="border border-white rounded-full size-4 grid place-items-center text-white group-hover:text-(--red) group-hover:bg-white">${svg.decrement}</span>
+            </button>
+            <span class="productCount text-white select-none">1</span>
+            <button class="incrementBtn grid place-items-center group p-1 rounded-full sm:cursor-pointer">
+              <span class="border border-white rounded-full size-4 grid place-items-center text-white group-hover:text-(--red) group-hover:bg-white">${svg.increment}</span>
+            </button>
+          </div>
         </div>
       </div>
-      <div class="mt-8">
+      <div class="mt-10">
         <span class="text-sm text-(--rose-500)">${menu.category}</span>
-        <h3 class="font-semibold">${menu.name}</h3>
-        <span class="text-lg text-(--red) font-semibold">$${menu.price.toFixed(2)}</span>
+        <h3 class="menuName font-semibold">${menu.name}</h3>
+        <span class="menuPrice text-lg text-(--red) font-semibold">$${menu.price.toFixed(2)}</span>
       </div>
     `;
     productListContainer.appendChild(div);
   });
-});
+})();
 
+//! Add item to cart
+const cartList = [];
+
+function createCartList() {
+  cartInfo.innerHTML = '';
+  const listsContainer = document.createElement('div');
+  const confirmContainer = document.createElement('div');
+
+  cartList.forEach((item) => {
+    const div = document.createElement('div');
+    div.className = 'eachCartList py-4 border-b border-(--rose-100)';
+    div.innerHTML = `
+      <div class="flex items-center justify-between text-sm">
+        <div>
+          <span class="text-sm font-semibold block mb-2">${item.name}</span>
+          <div class="flex gap-2.5 items-center">
+            <span class="text-(--red) font-semibold">${item.productCount}x</span>
+            <span class="ml-2 text-(--rose-500)"><span class="mr-0.5">@</span>$${item.price.toFixed(2)}</span>
+            <span class="text-(--rose-500) font-semibold">$${(item.productCount * item.price).toFixed(2)}</span>
+          </div>
+        </div>
+        <button data-menu-id="${item.id}" class="itemRemoveBtn group grid place-items-center p-1 rounded-full sm:cursor-pointer">
+          <span class="border text-(--rose-400) group-hover:text-(--rose-900) rounded-full p-1">
+            ${svg.removeItem}
+          </span>
+        </button>
+      </div>
+    `;
+    listsContainer.appendChild(div);
+  });
+
+  const totalPrice = cartList.reduce((accumulator, item) => accumulator + item.productCount * item.price, 0);
+  confirmContainer.className = 'mt-6';
+  confirmContainer.innerHTML = `
+    <div class="flex justify-between mb-6">
+      <span class="">Order Total</span>
+      <span class="text-2xl font-bold">$${totalPrice.toFixed(2)}</span>
+    </div>
+    <div class="flex justify-center items-center gap-2 bg-(--rose-100) rounded-md py-4">
+      ${svg.carbonNeutral}
+      <span class="text-sm">This is a <span class="font-semibold">carbo-neutral</span> delivery</span>
+    </div>
+    <button class="block mt-6 w-full h-[55px] bg-(--red) rounded-full font-semibold text-white sm:cursor-pointer hover:bg-[hsl(14,85%,35%)]">Confirm Order</button>
+  `;
+
+  cartInfo.appendChild(listsContainer);
+  cartInfo.appendChild(confirmContainer);
+}
+
+function addToCart(btn) {
+  const price = Number(btn.closest('.eachMenu').querySelector('.menuPrice').textContent.replace('$', ''));
+  const name = btn.closest('.eachMenu').querySelector('.menuName').textContent;
+  const menuInfo = {
+    id: Number(btn.dataset.menuId),
+    name,
+    price: price,
+    productCount: 1,
+  };
+  cartList.push(menuInfo);
+  btn.closest('.cartBtnContainer').classList.add('switch');
+  createCartList();
+}
+
+//! Remove item from cart
+function removeItemFromCart(btn) {
+  const index = cartList.findIndex((item) => item.id === Number(btn.dataset.menuId));
+  if (index !== -1) {
+    cartList.splice(index, 1);
+  }
+
+  btn.closest('.eachCartList').remove();
+  if (cartList.length < 1) {
+    cartInfo.innerHTML = '';
+    cartInfo.innerHTML = emptyMenuListPlaceholder();
+  }
+
+  const domItemContainer = document.querySelector(`.cartBtnContainer:has([data-menu-id="${btn.dataset.menuId}"])`);
+  domItemContainer.classList.remove('switch');
+}
 
 document.addEventListener('click', (e) => {
   const addToCartBtn = e.target.closest('.addToCartBtn');
-  if(addToCartBtn) {
-    const eachMenu = addToCartBtn.closest('.eachMenu');
+  if (addToCartBtn) {
+    addToCart(addToCartBtn);
   }
-})
+
+  const itemRemoveBtn = e.target.closest('.itemRemoveBtn');
+  if (itemRemoveBtn) {
+    removeItemFromCart(itemRemoveBtn);
+  }
+});

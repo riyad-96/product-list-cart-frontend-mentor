@@ -29,3 +29,11 @@
   --rose-500: hsl(12, 20%, 44%);
   --rose-900: hsl(14, 65%, 9%);
 }
+
+.cartBtnContainer.switch {
+  background-color: var(--red);
+  border: 1px solid var(--red);
+  &>button {
+    display: none;
+  }
+}
