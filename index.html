@@ -2,15 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/src/images/favicon-32x32.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
+    <title>Frontend Mentor | Product list with cart</title>
 
     <link rel="stylesheet" href="./src/style.css" />
     <script src="./src/app.js" defer></script>
   </head>
-  <body class="bg-(--rose-100) font-['Red_Hat_Text'] text-(--rose-900)">
-    <main class="my-18 box-content gap-8 px-6 md:mx-auto md:flex md:max-w-[1220px] md:items-start">
+  <body class="bg-(--rose-50) font-['Red_Hat_Text'] text-(--rose-900)">
+    <main class="my-18 box-content gap-8 px-6 max-md:space-y-10 md:mx-auto md:flex md:max-w-[1220px] md:items-start">
       <div class="flex-1">
         <h1 class="mb-8 text-[2.525rem] font-bold text-(--rose-900)">Desserts</h1>
         <!-- Product lists -->
@@ -18,12 +18,47 @@
       </div>
 
       <div id="cart" class="grid gap-2 rounded-xl bg-white px-6 py-5 md:w-[285px] lg:w-[385px]">
-        <h2 class="text-[1.5rem] font-bold text-(--red)">Your Cart (<span id="product-count">0</span>)</h2>
+        <h2 class="text-[1.5rem] font-bold text-(--red)">Your Cart (<span id="product-count-container">0</span>)</h2>
         <div id="cart-info">
           <img class="mx-auto mt-6" src="./src/images/illustration-empty-cart.svg" alt="Image of a cake" />
           <span class="block pt-4 pb-6 text-center text-sm font-semibold text-(--rose-500)">Your added items will appear here</span>
         </div>
       </div>
     </main>
+
+    <footer class="mx-auto box-content grid px-6 py-12 md:max-w-[1220px]">
+      <p class="mb-4 text-center">Challenge by <a class="font-semibold underline-offset-4 transition-[text-underline-offset] hover:underline hover:underline-offset-2" href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. Coded by <a class="font-semibold underline-offset-4 transition-[text-underline-offset] hover:underline hover:underline-offset-2" href="https://github.com/riyad-96" target="_blank">Riyad</a>.</p>
+
+      <button class="devNoteBtn relative mx-auto box-content grid h-[35px] w-[110px] place-items-center rounded-full border bg-(--red) font-semibold text-white hover:bg-[hsl(14,86%,35%)] sm:cursor-pointer">DevNote</button>
+    </footer>
+
+    <!-- Confirm Modal -->
+    <div class="confirm-modal hide fixed inset-0 grid place-items-center overflow-y-auto bg-black/30 p-6">
+      <div class="w-full max-w-[590px] rounded-xl bg-white p-8 shadow-lg">
+        <img src="./src/images/icon-order-confirmed.svg" alt="Confirm sign" />
+        <h2 class="mt-8 mb-2 text-4xl font-bold">Order Confirmed</h2>
+        <span>We hope you enjoy your food!</span>
+
+        <div class="my-6 rounded-md bg-(--rose-50) p-6">
+          <div class="confirmed-item-list-container">
+            <!-- Confirmed list goes here -->
+          </div>
+
+          <div class="mt-6 flex items-center justify-between">
+            <span>Order Total</span>
+            <span class="total-confirmed-amount text-2xl font-bold">--</span>
+          </div>
+        </div>
+        <button class="startNewOrderBtn block h-[55px] w-full rounded-full bg-(--red) font-semibold text-white select-none hover:bg-[hsl(14,85%,35%)] sm:cursor-pointer">Start New Order</button>
+      </div>
+    </div>
+
+    <div class="devNote-modal hide fixed inset-0 grid place-items-center overflow-y-auto bg-black/30 p-6">
+      <div class="devNote-modal-content w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+        <h3 class="mb-2 text-xl font-semibold">Developer Note</h3>
+        <p class="mb-4 text-gray-700">A code editor powered by CodeMirror and some handcrafted JS. Nothing too fancy — just clean UI and instant results.</p>
+        <button class="openMyEditorPageBtn mt-6 block w-full rounded-full bg-(--red) px-6 py-2 text-white hover:bg-[hsl(14,85%,35%)] sm:cursor-pointer">Try the Editor</button>
+      </div>
+    </div>
   </body>
 </html>

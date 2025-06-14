@@ -123,28 +123,29 @@ function emptyMenuListPlaceholder() {
 }
 
 const productListContainer = document.getElementById('product-list-container');
-const productCount = document.getElementById('product-count');
+const productCountContainer = document.getElementById('product-count-container');
 const cartInfo = document.getElementById('cart-info');
 
 //! Load all dessert menu
-(() => {
+function loadAllMenu() {
+  productListContainer.innerHTML = '';
   dessertMenu.forEach((menu) => {
     const div = document.createElement('div');
     div.className = 'eachMenu pb-2';
     div.innerHTML = `
-      <div class="aspect-1/1 bg-cover bg-center bg-no-repeat border-blue-700 rounded-lg relative" style="background-image: url(${menu.image.desktop});">
+      <div data-selected-item-photo="${menu.id}" class="aspect-1/1 bg-cover bg-center bg-no-repeat border-2 border-transparent rounded-lg relative" style="background-image: url(${menu.image.desktop});">
         <div class="cartBtnContainer border border-(--rose-500) hover:border-(--red) absolute top-full left-[50%] translate-[-50%] w-[160px] h-[45px] rounded-full overflow-hidden">
-          <button data-menu-id="${menu.id}" class="addToCartBtn group w-full h-full bg-white flex items-center justify-center gap-2 sm:cursor-pointer">
+          <button aria-label="Add ${menu.name} to cart" title="Add ${menu.name} to cart" data-menu-id="${menu.id}" class="addToCartBtn group w-full h-full bg-white flex items-center justify-center gap-2 sm:cursor-pointer">
             ${svg.cart}
             <span class="font-semibold text-sm text-(--rose-900) group-hover:text-(--red)">Add to Cart</span>
           </button>
-          <div class="bg-(--red) h-full flex items-center justify-between px-4">
-            <button class="decrementBtn grid place-items-center group p-1 rounded-full sm:cursor-pointer">
-              <span class="border border-white rounded-full size-4 grid place-items-center text-white group-hover:text-(--red) group-hover:bg-white">${svg.decrement}</span>
+          <div class="countBtnContainer bg-(--red) h-full flex items-center justify-between px-1">
+            <button aria-label="Decrease the amount of ${menu.name}" title="Decrease" data-menu-id="${menu.id}" class="decrementBtn grid place-items-center group p-2 rounded-full sm:cursor-pointer">
+              <span class="box-content p-0.2 border border-white rounded-full size-4 grid place-items-center text-white group-hover:text-(--red) group-hover:bg-white">${svg.decrement}</span>
             </button>
-            <span class="productCount text-white select-none">1</span>
-            <button class="incrementBtn grid place-items-center group p-1 rounded-full sm:cursor-pointer">
-              <span class="border border-white rounded-full size-4 grid place-items-center text-white group-hover:text-(--red) group-hover:bg-white">${svg.increment}</span>
+            <span data-reset-count-id="${menu.id}" class="productCount text-white select-none">1</span>
+            <button aria-label="Increase the amount of ${menu.name}" title="Increase" data-menu-id="${menu.id}" class="incrementBtn grid place-items-center group p-2 rounded-full sm:cursor-pointer">
+              <span class="box-content p-0.2 border border-white rounded-full size-4 grid place-items-center text-white group-hover:text-(--red) group-hover:bg-white">${svg.increment}</span>
             </button>
           </div>
         </div>
@@ -157,12 +158,20 @@ const cartInfo = document.getElementById('cart-info');
     `;
     productListContainer.appendChild(div);
   });
-})();
+}
+loadAllMenu();
 
-//! Add item to cart
+//! Update cart items
 const cartList = [];
 
-function createCartList() {
+function updateCartList() {
+  if (cartList.length < 1) {
+    cartInfo.innerHTML = '';
+    cartInfo.innerHTML = emptyMenuListPlaceholder();
+    productCountContainer.textContent = 0;
+    return;
+  }
+
   cartInfo.innerHTML = '';
   const listsContainer = document.createElement('div');
   const confirmContainer = document.createElement('div');
@@ -180,7 +189,7 @@ function createCartList() {
             <span class="text-(--rose-500) font-semibold">$${(item.productCount * item.price).toFixed(2)}</span>
           </div>
         </div>
-        <button data-menu-id="${item.id}" class="itemRemoveBtn group grid place-items-center p-1 rounded-full sm:cursor-pointer">
+        <button aria-label="Remove ${item.name} from cart" title="Remove ${item.name} from cart" data-menu-id="${item.id}" class="itemRemoveBtn group grid place-items-center p-1 rounded-full sm:cursor-pointer">
           <span class="border text-(--rose-400) group-hover:text-(--rose-900) rounded-full p-1">
             ${svg.removeItem}
           </span>
@@ -197,15 +206,17 @@ function createCartList() {
       <span class="">Order Total</span>
       <span class="text-2xl font-bold">$${totalPrice.toFixed(2)}</span>
     </div>
-    <div class="flex justify-center items-center gap-2 bg-(--rose-100) rounded-md py-4">
+    <div class="flex justify-center items-center gap-2 bg-(--rose-50) rounded-md py-4">
       ${svg.carbonNeutral}
       <span class="text-sm">This is a <span class="font-semibold">carbo-neutral</span> delivery</span>
     </div>
-    <button class="block mt-6 w-full h-[55px] bg-(--red) rounded-full font-semibold text-white sm:cursor-pointer hover:bg-[hsl(14,85%,35%)]">Confirm Order</button>
+    <button class="confirmBtn mt-6 block h-[55px] w-full rounded-full bg-(--red) font-semibold text-white select-none hover:bg-[hsl(14,85%,35%)] sm:cursor-pointer">Confirm Order</button>
   `;
-
   cartInfo.appendChild(listsContainer);
   cartInfo.appendChild(confirmContainer);
+
+  const totalProducts = cartList.reduce((acc, item) => acc + item.productCount, 0);
+  productCountContainer.textContent = totalProducts;
 }
 
 function addToCart(btn) {
@@ -219,7 +230,8 @@ function addToCart(btn) {
   };
   cartList.push(menuInfo);
   btn.closest('.cartBtnContainer').classList.add('switch');
-  createCartList();
+  updateCartList();
+  document.querySelector(`[data-selected-item-photo="${btn.dataset.menuId}"]`).classList.add('selected-border');
 }
 
 //! Remove item from cart
@@ -227,26 +239,123 @@ function removeItemFromCart(btn) {
   const index = cartList.findIndex((item) => item.id === Number(btn.dataset.menuId));
   if (index !== -1) {
     cartList.splice(index, 1);
+    const domItemContainer = document.querySelector(`.cartBtnContainer:has([data-menu-id="${btn.dataset.menuId}"])`);
+    domItemContainer.classList.remove('switch');
   }
-
-  btn.closest('.eachCartList').remove();
-  if (cartList.length < 1) {
-    cartInfo.innerHTML = '';
-    cartInfo.innerHTML = emptyMenuListPlaceholder();
-  }
-
-  const domItemContainer = document.querySelector(`.cartBtnContainer:has([data-menu-id="${btn.dataset.menuId}"])`);
-  domItemContainer.classList.remove('switch');
+  updateCartList();
+  document.querySelector(`[data-reset-count-id="${btn.dataset.menuId}"]`).textContent = 1;
+  document.querySelector(`[data-selected-item-photo="${btn.dataset.menuId}"]`).classList.remove('selected-border');
 }
 
+//! increment or decrement program
+function incrementOrDecrement(btn, value) {
+  const index = cartList.findIndex((item) => item.id === Number(btn.dataset.menuId));
+  if (index !== -1) {
+    if (cartList[index].productCount === 1 && value === -1) return;
+
+    cartList[index].productCount += value;
+    updateCartList();
+    btn.closest('.countBtnContainer').querySelector('.productCount').textContent = cartList[index].productCount;
+  }
+}
+
+//! Confirm product program
+const confirmedList = document.querySelector('.confirmed-item-list-container');
+const confirmedPrice = document.querySelector('.total-confirmed-amount');
+
+function confirmProduct() {
+  confirmedList.innerHTML = '';
+  let totalConfirmedPrice = 0;
+
+  cartList.forEach((item) => {
+    const menuItem = dessertMenu.find((obj) => obj.id === item.id);
+    const confirmedItem = cartList.find((obj) => obj.id === menuItem.id);
+
+    const name = confirmedItem.name;
+    const count = confirmedItem.productCount;
+    const price = confirmedItem.price;
+    const totalPrice = count * price;
+
+    totalConfirmedPrice += totalPrice;
+
+    const div = document.createElement('div');
+    div.className = 'flex items-center gap-4 py-4 first:pt-0 border-b-1 border-(--rose-100)';
+    div.innerHTML = `
+      <div class="aspect-1/1 size-[50px]">
+        <img class="rounded-md" src="${menuItem.image.thumbnail}" />
+      </div>
+      <div class="flex-1 grid gap-1 text-sm">
+        <span class="font-semibold">${name}</span>
+        <div class="flex items-center gap-4">
+          <span class="text-(--red) font-semibold">${count}x</span>
+          <span class="text-(--rose-500) flex gap-1">
+            <span>@</span>
+            <span class="">$${price.toFixed(2)}</span>
+          </span>
+        </div>
+      </div>
+      <span class="text-lg font-semibold">$${totalPrice.toFixed(2)}</span>`;
+    confirmedList.appendChild(div);
+  });
+
+  confirmedPrice.textContent = '$' + totalConfirmedPrice.toFixed(2);
+  confirmedList.closest('.confirm-modal').classList.remove('hide');
+  document.body.style.overflow = 'hidden';
+}
+
+//! Refresh page program
+function refreshPage() {
+  loadAllMenu();
+  document.querySelector('.confirm-modal').classList.add('hide');
+  cartInfo.innerHTML = emptyMenuListPlaceholder();
+  document.body.style.overflow = '';
+  cartList.length = 0;
+}
+
+//! Event listener
 document.addEventListener('click', (e) => {
   const addToCartBtn = e.target.closest('.addToCartBtn');
   if (addToCartBtn) {
     addToCart(addToCartBtn);
+    return;
   }
-
   const itemRemoveBtn = e.target.closest('.itemRemoveBtn');
   if (itemRemoveBtn) {
     removeItemFromCart(itemRemoveBtn);
+    return;
+  }
+  const incrementBtn = e.target.closest('.incrementBtn');
+  const decrementBtn = e.target.closest('.decrementBtn');
+  if (incrementBtn) {
+    incrementOrDecrement(incrementBtn, 1);
+    return;
+  }
+  if (decrementBtn) {
+    incrementOrDecrement(decrementBtn, -1);
+    return;
+  }
+  const confirmBtn = e.target.closest('.confirmBtn');
+  if (confirmBtn) {
+    confirmProduct();
+    return;
+  }
+  if (e.target.closest('.startNewOrderBtn')) {
+    refreshPage();
+  }
+  if (e.target.closest('.devNoteBtn')) {
+    document.querySelector('.devNote-modal').classList.remove('hide');
+    document.body.style.overflow = 'hidden';
+  }
+  if (e.target.closest('.openMyEditorPageBtn')) {
+    window.open('https://zero-ide.vercel.app', '_blank');
+    document.querySelector('.devNote-modal').classList.add('hide');
+    document.body.style.overflow = '';
+  }
+  if (e.target.closest('.devNote-modal-content')) {
+    return;
+  }
+  if (e.target.closest('.devNote-modal')) {
+    document.querySelector('.devNote-modal').classList.add('hide');
+    document.body.style.overflow = '';
   }
 });
