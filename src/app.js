@@ -1,11 +1,17 @@
+const imageMap = import.meta.glob(['./images/*.jpg', './images/*.svg'], {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+
 const dessertMenu = [
   {
     id: 1,
     image: {
-      thumbnail: './src/images/image-waffle-thumbnail.jpg',
-      mobile: './src/images/image-waffle-mobile.jpg',
-      tablet: './src/images/image-waffle-tablet.jpg',
-      desktop: './src/images/image-waffle-desktop.jpg',
+      thumbnail: imageMap['./images/image-waffle-thumbnail.jpg'],
+      mobile: imageMap['./images/image-waffle-mobile.jpg'],
+      tablet: imageMap['./images/image-waffle-tablet.jpg'],
+      desktop: imageMap['./images/image-waffle-desktop.jpg'],
     },
     name: 'Waffle with Berries',
     category: 'Waffle',
@@ -14,10 +20,10 @@ const dessertMenu = [
   {
     id: 2,
     image: {
-      thumbnail: './src/images/image-creme-brulee-thumbnail.jpg',
-      mobile: './src/images/image-creme-brulee-mobile.jpg',
-      tablet: './src/images/image-creme-brulee-tablet.jpg',
-      desktop: './src/images/image-creme-brulee-desktop.jpg',
+      thumbnail: imageMap['./images/image-creme-brulee-thumbnail.jpg'],
+      mobile: imageMap['./images/image-creme-brulee-mobile.jpg'],
+      tablet: imageMap['./images/image-creme-brulee-tablet.jpg'],
+      desktop: imageMap['./images/image-creme-brulee-desktop.jpg'],
     },
     name: 'Vanilla Bean Crème Brûlée',
     category: 'Crème Brûlée',
@@ -26,10 +32,10 @@ const dessertMenu = [
   {
     id: 3,
     image: {
-      thumbnail: './src/images/image-macaron-thumbnail.jpg',
-      mobile: './src/images/image-macaron-mobile.jpg',
-      tablet: './src/images/image-macaron-tablet.jpg',
-      desktop: './src/images/image-macaron-desktop.jpg',
+      thumbnail: imageMap['./images/image-macaron-thumbnail.jpg'],
+      mobile: imageMap['./images/image-macaron-mobile.jpg'],
+      tablet: imageMap['./images/image-macaron-tablet.jpg'],
+      desktop: imageMap['./images/image-macaron-desktop.jpg'],
     },
     name: 'Macaron Mix of Five',
     category: 'Macaron',
@@ -38,10 +44,10 @@ const dessertMenu = [
   {
     id: 4,
     image: {
-      thumbnail: './src/images/image-tiramisu-thumbnail.jpg',
-      mobile: './src/images/image-tiramisu-mobile.jpg',
-      tablet: './src/images/image-tiramisu-tablet.jpg',
-      desktop: './src/images/image-tiramisu-desktop.jpg',
+      thumbnail: imageMap['./images/image-tiramisu-thumbnail.jpg'],
+      mobile: imageMap['./images/image-tiramisu-mobile.jpg'],
+      tablet: imageMap['./images/image-tiramisu-tablet.jpg'],
+      desktop: imageMap['./images/image-tiramisu-desktop.jpg'],
     },
     name: 'Classic Tiramisu',
     category: 'Tiramisu',
@@ -50,10 +56,10 @@ const dessertMenu = [
   {
     id: 5,
     image: {
-      thumbnail: './src/images/image-baklava-thumbnail.jpg',
-      mobile: './src/images/image-baklava-mobile.jpg',
-      tablet: './src/images/image-baklava-tablet.jpg',
-      desktop: './src/images/image-baklava-desktop.jpg',
+      thumbnail: imageMap['./images/image-baklava-thumbnail.jpg'],
+      mobile: imageMap['./images/image-baklava-mobile.jpg'],
+      tablet: imageMap['./images/image-baklava-tablet.jpg'],
+      desktop: imageMap['./images/image-baklava-desktop.jpg'],
     },
     name: 'Pistachio Baklava',
     category: 'Baklava',
@@ -62,10 +68,10 @@ const dessertMenu = [
   {
     id: 6,
     image: {
-      thumbnail: './src/images/image-meringue-thumbnail.jpg',
-      mobile: './src/images/image-meringue-mobile.jpg',
-      tablet: './src/images/image-meringue-tablet.jpg',
-      desktop: './src/images/image-meringue-desktop.jpg',
+      thumbnail: imageMap['./images/image-meringue-thumbnail.jpg'],
+      mobile: imageMap['./images/image-meringue-mobile.jpg'],
+      tablet: imageMap['./images/image-meringue-tablet.jpg'],
+      desktop: imageMap['./images/image-meringue-desktop.jpg'],
     },
     name: 'Lemon Meringue Pie',
     category: 'Pie',
@@ -74,10 +80,10 @@ const dessertMenu = [
   {
     id: 7,
     image: {
-      thumbnail: './src/images/image-cake-thumbnail.jpg',
-      mobile: './src/images/image-cake-mobile.jpg',
-      tablet: './src/images/image-cake-tablet.jpg',
-      desktop: './src/images/image-cake-desktop.jpg',
+      thumbnail: imageMap['./images/image-cake-thumbnail.jpg'],
+      mobile: imageMap['./images/image-cake-mobile.jpg'],
+      tablet: imageMap['./images/image-cake-tablet.jpg'],
+      desktop: imageMap['./images/image-cake-desktop.jpg'],
     },
     name: 'Red Velvet Cake',
     category: 'Cake',
@@ -86,10 +92,10 @@ const dessertMenu = [
   {
     id: 8,
     image: {
-      thumbnail: './src/images/image-brownie-thumbnail.jpg',
-      mobile: './src/images/image-brownie-mobile.jpg',
-      tablet: './src/images/image-brownie-tablet.jpg',
-      desktop: './src/images/image-brownie-desktop.jpg',
+      thumbnail: imageMap['./images/image-brownie-thumbnail.jpg'],
+      mobile: imageMap['./images/image-brownie-mobile.jpg'],
+      tablet: imageMap['./images/image-brownie-tablet.jpg'],
+      desktop: imageMap['./images/image-brownie-desktop.jpg'],
     },
     name: 'Salted Caramel Brownie',
     category: 'Brownie',
@@ -98,10 +104,10 @@ const dessertMenu = [
   {
     id: 9,
     image: {
-      thumbnail: './src/images/image-panna-cotta-thumbnail.jpg',
-      mobile: './src/images/image-panna-cotta-mobile.jpg',
-      tablet: './src/images/image-panna-cotta-tablet.jpg',
-      desktop: './src/images/image-panna-cotta-desktop.jpg',
+      thumbnail: imageMap['./images/image-panna-cotta-thumbnail.jpg'],
+      mobile: imageMap['./images/image-panna-cotta-mobile.jpg'],
+      tablet: imageMap['./images/image-panna-cotta-tablet.jpg'],
+      desktop: imageMap['./images/image-panna-cotta-desktop.jpg'],
     },
     name: 'Vanilla Panna Cotta',
     category: 'Panna Cotta',
@@ -117,8 +123,10 @@ const svg = {
   removeItem: `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path fill="currentColor" d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z"/></svg>`,
 };
 
+const placeholderImg = imageMap['./images/illustration-empty-cart.svg'];
+
 function emptyMenuListPlaceholder() {
-  return `<img class="mx-auto mt-8" src="./src/images/illustration-empty-cart.svg" alt="Image of a cake" />
+  return `<img class="mx-auto mt-8" src="${placeholderImg}" alt="Image of a cake" />
           <span class="block pt-4 pb-6 text-center text-sm font-semibold text-(--rose-500)">Your added items will appear here</span>`;
 }
 
